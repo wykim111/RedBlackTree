@@ -1,0 +1,36 @@
+/*
+	레드 블랙 트리 규칙
+
+	1. 모든 노드는 빨간색 아니면 검은색이다.
+	2. 루트노드는 검은색이다.
+	3. 리프 노드는 검은색이다.
+	4. 빨간 노드의 자식들은 모두 검은색이다. 하지만 검은 노드의 자식이 빨간색일 필요는 없다(주관적)
+	5. 루트노드에서 모든 잎 노드 사이에 있는 검은색 노드의 수는 모두 동일하다.
+
+*/
+
+#ifndef _RED_BLACK_TREE_H
+#define _RED_BLACK_TREE_H
+
+#include<stdio.h>
+#include<stdlib.h>
+
+#define RED 0
+#define BLACK 1
+
+typedef struct _red_black_treenode
+{
+	int data;
+	int color;
+
+	struct _red_black_treenode* parent;
+	struct _red_black_treenode* right;
+	struct _red_black_treenode* left;
+
+
+}Red_Black_TreeNode;
+
+Red_Black_TreeNode* RBT_Create_Node(int data);
+void show_menu();
+
+#endif
