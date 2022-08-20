@@ -14,7 +14,6 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-#include<string.h>
 
 #define RED 0
 #define BLACK 1
@@ -32,11 +31,6 @@ typedef struct _red_black_treenode
 }Red_Black_TreeNode;
 
 Red_Black_TreeNode* RBT_Create_Node(int data);
-void RBT_InsertNode(Red_Black_TreeNode** tree, Red_Black_TreeNode* new_node);
-void RBT_InsertNodeHelper(Red_Black_TreeNode** tree, Red_Black_TreeNode* new_node);
-void RBT_RebuildAfterInsert(Red_Black_TreeNode** root, Red_Black_TreeNode* cur_node);
-
-
 void show_menu();
 
 #endif
