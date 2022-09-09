@@ -18,6 +18,28 @@ Red_Black_TreeNode* RBT_Create_Node(int data)
 	return new_node;
 }
 
+Red_Black_TreeNode* RBT_SearchNode(Red_Black_TreeNode* tree, int target)
+{
+	if (tree == null_leaf_node)
+	{
+		return NULL;
+	}
+
+	if (tree->data > target)
+	{
+		return RBT_SearchNode(tree->left, target);
+	}
+	else if (tree->data < target)
+	{
+		return RBT_SearchNode(tree->right, target);
+	}
+	else
+	{
+		return tree;
+	}
+
+}
+
 void RBT_InsertNode(Red_Black_TreeNode** tree, Red_Black_TreeNode* new_node)
 {
 	//이진트리 원리로 노드 삽입
@@ -66,6 +88,23 @@ void RBT_InsertNodeHelper(Red_Black_TreeNode** tree, Red_Black_TreeNode* new_nod
 	}
 
 
+}
+
+Red_Black_TreeNode* RBT_SearchMinNode(Red_Black_TreeNode* tree)
+{
+	if (tree == null_leaf_node)
+	{
+		return null_leaf_node;
+	}
+
+	if (tree->left == null_leaf_node)
+	{
+		return tree;
+	}
+	else
+	{
+		return RBT_SearchMinNode(tree->left);
+	}
 }
 
 void RBT_RotateRight(Red_Black_TreeNode** root, Red_Black_TreeNode* parent)//rotate LL
@@ -222,6 +261,68 @@ void RBT_RebuildAfterInsert(Red_Black_TreeNode** root, Red_Black_TreeNode* cur_n
 
 	(*root)->color = BLACK;
 }
+
+Red_Black_TreeNode* RBT_RemoveNode(Red_Black_TreeNode** root, int data)
+{
+	//삭제할 위치 노드
+	Red_Black_TreeNode* remove_node = NULL;
+	//삭제한 뒤 대신할 노드
+	Red_Black_TreeNode* succ_node = NULL;
+	//data가 존재하는 노드 
+	Red_Black_TreeNode* target = RBT_SearchNode(*root,data);
+
+	if (target == NULL)
+	{
+		return NULL;
+	}
+
+	if ((target->left == null_leaf_node) || (target->right == null_leaf_node))
+	{
+		remove_node = target;
+	}
+	else
+	{
+		remove_node = RBT_SearchMinNode(target->right);//최단 노드의 left는 가장 값이 트리 노드중에서 작음.
+		target->data = remove_node->data;
+	}
+
+	if (remove_node->left != null_leaf_node)
+	{
+		succ_node = remove_node->left;
+	}
+	else
+	{
+		succ_node = remove_node->right;
+	}
+
+	succ_node->parent = remove_node->parent;
+
+	if (remove_node->parent == NULL)//부모노드가 루트 노드인 경우
+	{
+		(*root) = succ_node;
+	}
+	else
+	{
+		//대체 노드 연결
+		if (remove_node == remove_node->parent->left)
+		{
+			remove_node->parent->left = succ_node;
+		}
+		else
+		{
+			remove_node->parent->right = succ_node;
+		}
+	}
+
+	if (remove_node->color == BLACK)
+	{
+		//rebuild tree
+		//RBT_RebuildAfterRemove(root, succ_node);
+	}
+
+	return remove_node;
+}
+
 
 void RBT_PrintTree(Red_Black_TreeNode* node, int depth, int black_count)
 {
