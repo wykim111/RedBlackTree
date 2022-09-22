@@ -40,6 +40,8 @@ void RBT_RotateRight(Red_Black_TreeNode** root, Red_Black_TreeNode* parent);//ro
 void RBT_RotateLeft(Red_Black_TreeNode** root, Red_Black_TreeNode* parent);//rotate RR
 void RBT_RebuildAfterInsert(Red_Black_TreeNode** root, Red_Black_TreeNode* cur_node);
 
+void RBT_RebuildAfterRemove(Red_Black_TreeNode** root, Red_Black_TreeNode* succ);
+Red_Black_TreeNode* RBT_RemoveNode(Red_Black_TreeNode** root, int data);
 
 void show_menu();
 

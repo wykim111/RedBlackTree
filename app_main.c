@@ -262,6 +262,45 @@ void RBT_RebuildAfterInsert(Red_Black_TreeNode** root, Red_Black_TreeNode* cur_n
 	(*root)->color = BLACK;
 }
 
+void RBT_RebuildAfterRemove(Red_Black_TreeNode** root, Red_Black_TreeNode* succ)
+{
+	Red_Black_TreeNode* sibling = NULL;
+
+	//루트노드이거나, 빨간색 노드한테 검은색이 넘어가면 루프 종료
+	while (succ->parent != NULL && succ->color == BLACK)
+	{
+		//대체 노드가 부모노드의 left에 위치한 경우
+		if (succ == succ->parent->left)
+		{
+			sibling = succ->parent->right;//형제 노드
+
+			//형제가 빨간색인 경우
+			if (sibling->color == RED)
+			{
+				/*
+					1. 형제를 검은색, 부모를 빨간색으로 변경
+					2. 부모를 기준으로 좌회전
+					3. 이중 흑색 노드를 검은색으로 처리
+				*/
+				sibling->color = BLACK;
+				succ->parent->color = RED;
+				RBT_RotateLeft(root, succ->parent);//부모를 기준으로 좌회전
+				sibling = succ->parent->right;//형제 노드 참조
+
+			}
+			else//형제가 검은색인 경우
+			{
+				
+			}
+		}
+		else//대체 노드가 부모노드의 right에 위치한 경우
+		{
+
+		}
+	}
+}
+
+
 Red_Black_TreeNode* RBT_RemoveNode(Red_Black_TreeNode** root, int data)
 {
 	//삭제할 위치 노드
@@ -419,6 +458,17 @@ int main()
 			break;
 			case 2:
 			{
+				int remove_num = 0;
+
+				printf("enter remove node\n");
+
+				printf("remove_num : ");
+				scanf("%d", &remove_num);
+
+				Node = RBT_RemoveNode(&Tree, remove_num);
+
+
+
 
 			}
 			break;
