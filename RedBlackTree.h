@@ -1,48 +1,39 @@
-/*
-	레드 블랙 트리 규칙
+#ifndef REDBLACKTREE_H
+#define REDBLACKTREE_H
 
-	1. 모든 노드는 빨간색 아니면 검은색이다.
-	2. 루트노드는 검은색이다.
-	3. 리프 노드는 검은색이다.
-	4. 빨간 노드의 자식들은 모두 검은색이다. 하지만 검은 노드의 자식이 빨간색일 필요는 없다(주관적)
-	5. 루트노드에서 모든 잎 노드 사이에 있는 검은색 노드의 수는 모두 동일하다.
 
-*/
+#include <stdio.h>
+#include <stdlib.h>
 
-#ifndef _RED_BLACK_TREE_H
-#define _RED_BLACK_TREE_H
+typedef int ElementType;
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-
-#define RED 0
-#define BLACK 1
-
-typedef struct _red_black_treenode
+typedef struct tagRBTNode
 {
-	int data;
-	int color;
+	struct tagRBTNode* Parent;
+	struct tagRBTNode* Left;
+	struct tagRBTNode* Right;
 
-	struct _red_black_treenode* parent;
-	struct _red_black_treenode* right;
-	struct _red_black_treenode* left;
+	enum { RED, BLACK } Color;
 
+	ElementType Data;
 
-}Red_Black_TreeNode;
+} RBTNode;
 
-Red_Black_TreeNode* RBT_Create_Node(int data);
-Red_Black_TreeNode* RBT_SearchNode(Red_Black_TreeNode* tree, int target);
-void RBT_InsertNode(Red_Black_TreeNode** tree, Red_Black_TreeNode* new_node);
-void RBT_InsertNodeHelper(Red_Black_TreeNode** tree, Red_Black_TreeNode* new_node);
-Red_Black_TreeNode* RBT_SearchMinNode(Red_Black_TreeNode* tree);
-void RBT_RotateRight(Red_Black_TreeNode** root, Red_Black_TreeNode* parent);//rotate LL
-void RBT_RotateLeft(Red_Black_TreeNode** root, Red_Black_TreeNode* parent);//rotate RR
-void RBT_RebuildAfterInsert(Red_Black_TreeNode** root, Red_Black_TreeNode* cur_node);
+void      RBT_DestroyTree(RBTNode* Tree);
 
-void RBT_RebuildAfterRemove(Red_Black_TreeNode** root, Red_Black_TreeNode* succ);
-Red_Black_TreeNode* RBT_RemoveNode(Red_Black_TreeNode** root, int data);
+RBTNode*  RBT_CreateNode(ElementType NewData);
+void      RBT_DestroyNode(RBTNode* Node);
 
-void show_menu();
+RBTNode*  RBT_SearchNode(RBTNode* Tree, ElementType Target);
+RBTNode*  RBT_SearchMinNode(RBTNode* Tree);
+void      RBT_InsertNode(RBTNode** Tree, RBTNode *NewNode);
+void      RBT_InsertNodeHelper(RBTNode** Tree, RBTNode *NewNode);
+RBTNode*  RBT_RemoveNode(RBTNode** Root, ElementType Target);
+void      RBT_RebuildAfterInsert(RBTNode** Tree, RBTNode* NewNode);
+void      RBT_RebuildAfterRemove(RBTNode** Root, RBTNode* X);
+
+void      RBT_PrintTree(RBTNode* Node, int Depth, int BlackCount);
+void      RBT_RotateLeft(RBTNode** Root, RBTNode* Parent);
+void      RBT_RotateRight(RBTNode** Root, RBTNode* Parent);
 
 #endif
