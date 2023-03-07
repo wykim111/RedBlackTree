@@ -28,8 +28,8 @@ typedef struct _red_black_treenode
 	struct _red_black_treenode* right;
 	struct _red_black_treenode* left;
 
-
 }Red_Black_TreeNode;
+
 
 Red_Black_TreeNode* RBT_Create_Node(int data);
 Red_Black_TreeNode* RBT_SearchNode(Red_Black_TreeNode* tree, int target);
@@ -42,7 +42,7 @@ void RBT_RebuildAfterInsert(Red_Black_TreeNode** root, Red_Black_TreeNode* cur_n
 
 void RBT_RebuildAfterRemove(Red_Black_TreeNode** root, Red_Black_TreeNode* succ);
 Red_Black_TreeNode* RBT_RemoveNode(Red_Black_TreeNode** root, int data);
-
+void RBT_Destroy(Red_Black_TreeNode* Node);
 void show_menu();
 
 #endif

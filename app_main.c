@@ -18,6 +18,14 @@ Red_Black_TreeNode* RBT_Create_Node(int data)
 	return new_node;
 }
 
+void RBT_Destroy(Red_Black_TreeNode* Node)
+{
+	printf("RBT_Destroy :: free\n");
+
+	free(Node);
+}
+
+
 Red_Black_TreeNode* RBT_SearchNode(Red_Black_TreeNode* tree, int target)
 {
 	if (tree == null_leaf_node)
@@ -39,7 +47,9 @@ Red_Black_TreeNode* RBT_SearchNode(Red_Black_TreeNode* tree, int target)
 	}
 
 }
-
+/*
+	RBT 삽입
+*/
 void RBT_InsertNode(Red_Black_TreeNode** tree, Red_Black_TreeNode* new_node)
 {
 	//이진트리 원리로 노드 삽입
@@ -59,7 +69,7 @@ void RBT_InsertNodeHelper(Red_Black_TreeNode** tree, Red_Black_TreeNode* new_nod
 	if ((*tree) == NULL)//root node
 	{
 		(*tree) = new_node;
-		return;
+		
 	}
 
 	if ((*tree)->data < new_node->data)//move right of tree
@@ -71,7 +81,7 @@ void RBT_InsertNodeHelper(Red_Black_TreeNode** tree, Red_Black_TreeNode* new_nod
 		}
 		else
 		{
-			RBT_InsertNodeHelper(&((*tree)->right), new_node);
+			RBT_InsertNodeHelper(&(*tree)->right, new_node);
 		}
 	}
 	else if ((*tree)->data > new_node->data) // move left of tree
@@ -83,7 +93,7 @@ void RBT_InsertNodeHelper(Red_Black_TreeNode** tree, Red_Black_TreeNode* new_nod
 		}
 		else
 		{
-			RBT_InsertNodeHelper(&((*tree)->left), new_node);
+			RBT_InsertNodeHelper(&(*tree)->left, new_node);
 		}
 	}
 
@@ -195,16 +205,11 @@ void RBT_RebuildAfterInsert(Red_Black_TreeNode** root, Red_Black_TreeNode* cur_n
 		{
 			Red_Black_TreeNode* uncle = cur_node->parent->parent->right;
 
-			if (uncle == NULL)
-			{
-				return;
-			}
-
 			if (uncle->color == RED)
 			{
 				cur_node->parent->color = BLACK;
 				uncle->color = BLACK;
-				cur_node->parent->parent = RED;
+				cur_node->parent->parent->color = RED;
 
 				cur_node = cur_node->parent->parent;
 
@@ -228,16 +233,11 @@ void RBT_RebuildAfterInsert(Red_Black_TreeNode** root, Red_Black_TreeNode* cur_n
 		{
 			Red_Black_TreeNode* uncle = cur_node->parent->parent->left;
 
-			if (uncle == NULL)
-			{
-				return;
-			}
-
 			if (uncle->color == RED)
 			{
 				cur_node->parent->color = BLACK;
 				uncle->color = BLACK;
-				cur_node->parent->parent = RED;
+				cur_node->parent->parent->color = RED;
 
 				cur_node = cur_node->parent->parent;
 
@@ -434,6 +434,10 @@ int main()
 	Red_Black_TreeNode* Tree = NULL;
 	Red_Black_TreeNode* Node = NULL;
 
+	null_leaf_node = RBT_Create_Node(0);
+	null_leaf_node->color = BLACK;
+
+
 	while (1)
 	{
 		int cmd;
@@ -441,6 +445,7 @@ int main()
 		show_menu();
 		
 		scanf("%d", &cmd);
+		getchar();
 
 		switch (cmd)
 		{
@@ -452,6 +457,7 @@ int main()
 				
 				printf("input_num : ");
 				scanf("%d", &input_num);
+				getchar();
 
 				RBT_InsertNode(&Tree, RBT_Create_Node(input_num));
 			}
@@ -499,6 +505,7 @@ int main()
 
 	}
 
+	
 
 	return 0;
 }
