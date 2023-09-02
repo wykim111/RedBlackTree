@@ -261,7 +261,9 @@ void RBT_RebuildAfterInsert(Red_Black_TreeNode** root, Red_Black_TreeNode* cur_n
 
 	(*root)->color = BLACK;
 }
-
+/*
+	succ : 이증흑색(Doubly Black)을 갖고 있음.
+*/
 void RBT_RebuildAfterRemove(Red_Black_TreeNode** root, Red_Black_TreeNode* succ)
 {
 	Red_Black_TreeNode* sibling = NULL;
@@ -290,6 +292,37 @@ void RBT_RebuildAfterRemove(Red_Black_TreeNode** root, Red_Black_TreeNode* succ)
 			}
 			else//형제가 검은색인 경우
 			{
+				//왼쪽/오른쪽 모두 형제의 자식(조카)노드가 검은색인 경우
+				if ((sibling->left->color == BLACK) && (sibling->right->color == BLACK))
+				{
+					sibling->color = RED;
+					succ = succ->parent;
+				}
+				else//왼쪽 혹은 오른쪽  형제의 자식(조카)노드가 빨간색인 경우
+				{
+					/*
+						해당 기능에 대한 고찰
+						- 왼쪽 조카 노드는 RED 혹은 BLACK이 될 수 있으므로 조건 검사
+						- 오른쪽 조카 노드는 RED이든 RIGHT이든 모두 블랙으로 바꾸면 됨(결과론적 관점).
+					
+					*/
+
+					if (sibling->left->color == RED)//형제의 왼쪽 자식(조카)가 빨간색인 경우
+					{
+						sibling->left->color = BLACK;
+						sibling->color = RED;
+						RBT_RotateRight(root,sibling);
+						sibling = succ->parent->right;
+					}
+
+					//형제의 오른쪽 자식(조카)이 빨간색인 경우
+					sibling->color = sibling->parent->color;
+					succ->parent->color = BLACK;
+					sibling->right->color = BLACK;
+					RBT_RotateLeft(root, succ->parent);
+					succ = (*root);
+					
+				}
 				
 			}
 		}
