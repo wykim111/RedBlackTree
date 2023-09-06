@@ -327,10 +327,50 @@ void RBT_RebuildAfterRemove(Red_Black_TreeNode** root, Red_Black_TreeNode* succ)
 			}
 		}
 		else//대체 노드가 부모노드의 right에 위치한 경우
-		{
+		{			
+			//형제노드가 부모 노드의 왼쪽에 존재하는 경우
+			sibling = succ->parent->left;
 
+			if (sibling->color == RED)
+			{
+				sibling->color = BLACK;
+				succ->parent->color = RED;
+				RBT_RotateRight(root, succ->parent);
+				sibling = succ->parent->left;
+			}
+			else//형제 색깔이 BLACK인 경우
+			{
+				if ((sibling->left->color == BLACK) && (sibling->right->color == BLACK))
+				{
+					sibling->color = RED;
+					succ = succ->parent;
+				}
+				else
+				{
+					if (sibling->right->color == RED)
+					{
+						sibling->right->color = BLACK;
+						sibling->color = RED;
+
+						RBT_RotateLeft(root, sibling);
+						sibling = succ->parent->left;
+					}
+
+					sibling->color = succ->parent->color;
+					succ->parent->color = BLACK;
+					sibling->left->color = BLACK;
+					RBT_RotateRight(root, succ->parent);
+					succ = (*root);
+
+				}
+
+			}
+
+			
 		}
 	}
+
+	succ->color = BLACK;
 }
 
 
